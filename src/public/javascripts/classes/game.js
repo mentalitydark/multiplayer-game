@@ -13,11 +13,11 @@ export class Game {
     left: 0,
   };
 
-  /** @type {{ players: Object.<string, Player>, fruits: Object.<string, Fruit>}} */
-  state = {
-    players: {},
-    fruits: {}
-  };
+  /** @type {Object.<string, Player>} */
+  players = {};
+
+  /** @type {Object.<string, Fruit>} */
+  fruits = {};
 
   /** @type {KeyBoard} */
   keyboard;
@@ -57,35 +57,35 @@ export class Game {
     this.context.fillStyle = "white";
     this.context.clearRect(this.screen.top, this.screen.left, this.screen.right, this.screen.bottom);
 
-    for (const playerId in this.state.players) {
-      const player = this.state.players[playerId];
+    for (const playerId in this.players) {
+      const player = this.players[playerId];
       player.draw(this.context);
     }
 
-    for (const fruitId in this.state.fruits) {
-      const fruit = this.state.fruits[fruitId];
+    for (const fruitId in this.fruits) {
+      const fruit = this.fruits[fruitId];
       fruit.draw(this.context);
     }
   }
 
   /** @param {Player} player  */
   addPlayer(player) {
-    this.state.players[player.id] = player;
+    this.players[player.id] = player;
   }
 
   /** @param {string} playerId  */
   removePlayer(playerId) {
-    delete this.state.players[playerId];
+    delete this.players[playerId];
   }
 
   /** @param {Fruit} fruit  */
   addFruit(fruit) {
-    this.state.fruits[fruit.id] = fruit;
+    this.fruits[fruit.id] = fruit;
   }
 
   /** @param {string} fruitId  */
   removeFruit(fruitId) {
-    delete this.state.fruits[fruitId];
+    delete this.fruits[fruitId];
   }
 
   /** @param {Object.<string, boolean>} command */
@@ -103,8 +103,8 @@ export class Game {
   }
 
   checkForFruitCollision() {
-    for (const fruitId in this.state.fruits) {
-      const fruit = this.state.fruits[fruitId];
+    for (const fruitId in this.fruits) {
+      const fruit = this.fruits[fruitId];
 
       if (this.player.position.x === fruit.position.x && this.player.position.y === fruit.position.y)
         this.removeFruit(fruitId);
