@@ -1,0 +1,7 @@
+#game-screen {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+  width: 500px;
+  height: 500px;
+}
