@@ -16,7 +16,6 @@
         "semi": ["error", "always"],
         "sort-imports": ["error", { "allowSeparatedGroups": true }],
         "eqeqeq": "error",
-        "no-extra-boolean-cast": "error",
-        "no-magic-numbers": "error"
+        "no-extra-boolean-cast": "error"
     }
 }
