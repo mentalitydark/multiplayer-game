@@ -15,9 +15,9 @@ export class KeyBoard {
   constructor() {
     document.addEventListener("keydown", ({ key }) => {
       this.keys[key] = true;
-
       this.notifyAllObservers();
     });
+    
     document.addEventListener("keyup", ({ key }) => {
       this.keys[key] = false;
       this.notifyAllObservers();
