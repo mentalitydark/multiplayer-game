@@ -6,6 +6,8 @@ import { fileURLToPath } from "url";
 import http from "http";
 import path from "path";
 
+import { Game, Player } from "./public/javascripts/classes/index.js";
+
 const app = express();
 const server = http.createServer(app);
 const socketIo = new Server(server);
@@ -18,8 +20,13 @@ app.get("/", (_, res) => {
   res.sendFile(path.join(__dirname, "public","index.html"));
 });
 
-socketIo.on("connection", () => {
+const game = new Game();
+
+socketIo.on("connection", socket => {
+  game.addPlayer(new Player({ id: socket.id, position: { x: 0, y: 0 }, color: "black" }));
   console.log("A user connected!");
+
+  socket.emit("setup", game.state);
 });
 
 server.listen(process.env.PORT, () => {
