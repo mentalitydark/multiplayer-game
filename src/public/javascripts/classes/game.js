@@ -1,7 +1,3 @@
-import { Fruit } from "./fruit.js";
-import { KeyBoard } from "./keyboard.js";
-import { Player } from "./player.js";
-
 /**
  * Create a new Game
  */
@@ -22,19 +18,10 @@ export class Game {
   /** @type {KeyBoard} */
   keyboard;
 
-  /** @type {Player} */
-  player;
+  /** @type {string} */
+  playerId;
 
-  constructor() {
-    this.player = new Player({id: "player1", position: {x: 0, y: 0}, color: "yellow"});
-
-    this.addPlayer(this.player);
-    this.addPlayer(new Player({id: "player2", position: {x: 10, y: 10}, color: "black"}));
-    this.addFruit(new Fruit({id: "fruit1", position: {x: 25, y: 25}, color: "green"}));
-
-    this.keyboard = new KeyBoard();
-    this.keyboard.subscribeObserver(this.movePlayer.bind(this));
-  }
+  constructor() {}
 
   /**
    * @returns {CanvasRenderingContext2D}
@@ -45,6 +32,22 @@ export class Game {
     if (!canvas)
       throw new Error("Can't find canvas");
     return canvas.getContext("2d");
+  }
+
+  get state() {
+    return {
+      players: this.players,
+      fruits: this.fruits,
+      screen: this.screen
+    };
+  }
+
+  /**
+   * @param {import('./player.js').Player} player 
+   */
+  get player() {
+    const player = this.players[this.playerId];
+    return player;
   }
 
   update() {
