@@ -6,12 +6,14 @@ import { Entity } from "./entity.js";
 export class Fruit extends Entity {
   /**
    * @param {({
-   * id: string
+   * id?: string
    * position: { x: number, y: number }
-   * color: string
+   * color?: string
    * })} props
    */
-  constructor(props) {
+  constructor(props = {}) {
+    props.id = "id" in props ? props.id : (new Date().getTime() - Math.random()*1000).toString(16);
+    props.color = "color" in props ? props.color : "green";
     super(props);
   }
 }
