@@ -1,13 +1,7 @@
-/**
- * @callback observerCallback
- * @param {Object.<string, boolean>} command
- * @returns void
- */
-
 export class KeyBoard {
 
-  /** @type {observerCallback[]} */
-  observers = [];
+  /** @type {Object.<string, Function>} */
+  observers = {};
 
   /** @type {Object.<string, boolean>} */
   keys = {};
@@ -15,24 +9,32 @@ export class KeyBoard {
   constructor() {
     document.addEventListener("keydown", ({ key }) => {
       this.keys[key] = true;
-      this.notifyAllObservers();
+      this.notifyAllObservers({keys: this.keys});
     });
     
     document.addEventListener("keyup", ({ key }) => {
       this.keys[key] = false;
-      this.notifyAllObservers();
+      this.notifyAllObservers({keys: this.keys});
     });
   }
 
   /**
-   * @param {observerCallback} callback 
+   * @param {string} callBackName
+   * @param {Function} callback
    */
-  subscribeObserver(callback) {
-    this.observers.push(callback);
+  subscribeObserver(callBackName, callback) {
+    this.observers[callBackName] = callback;
   }
 
-  notifyAllObservers() {
-    for (const observer of this.observers)
-      observer(this.keys);
+  unsubscribeObserver(observerName) {
+    delete this.observers[observerName];
+  }
+
+  notifyAllObservers(command) {
+    for (const callBackName in this.observers) {
+      const observer = this.observers[callBackName];
+      observer(command);
+    }
+
   }
 }
