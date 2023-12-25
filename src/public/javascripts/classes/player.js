@@ -9,10 +9,11 @@ export class Player extends Entity {
    * @param {({
   * id: string
   * position: { x: number, y: number }
-  * color: string
+  * color?: string
   * })} props
   */
   constructor(props) {
+    props.color = "color" in props ? props.color : "gray";
     super(props);
   }
 }
