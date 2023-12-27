@@ -8,6 +8,9 @@ export class Player extends Entity {
   /** @type {string} */
   name;
 
+  /** @type {number} */
+  score;
+
   /**
    * @param {({
   * id: string
@@ -21,5 +24,11 @@ export class Player extends Entity {
     super(props);
     
     this.name = "name" in props ? props.name : props.id;
+    this.score = "score" in props ? props.score : 0;
+  }
+
+  /** @param {number} value */
+  incrementScore(value) {
+    this.score += value;
   }
 }

@@ -86,6 +86,14 @@ export class Game {
     return player;
   }
 
+  getPlayersArray() {
+    const players = [];
+    for (const id in this.players)
+      players.push(this.players[id]);
+
+    return players;
+  }
+
   start() {
     this.update();
   }
@@ -199,6 +207,7 @@ export class Game {
 
       if (player.position.x === fruit.position.x && player.position.y === fruit.position.y) {
         this.removeFruit(fruitId);
+        player.incrementScore(1);
       }
     }
   }
