@@ -100,14 +100,14 @@ export class Game {
     this.context.fillStyle = "white";
     this.context.clearRect(0, 0, this.screen.width, this.screen.height);
 
-    for (const playerId in this.players) {
-      const player = this.players[playerId];
-      player.draw(this.context);
-    }
-
     for (const fruitId in this.fruits) {
       const fruit = this.fruits[fruitId];
       fruit.draw(this.context);
+    }
+
+    for (const playerId in this.players) {
+      const player = this.players[playerId];
+      player.draw(this.context);
     }
   }
 
@@ -197,8 +197,9 @@ export class Game {
     for (const fruitId in this.fruits) {
       const fruit = this.fruits[fruitId];
 
-      if (player.position.x === fruit.position.x && player.position.y === fruit.position.y)
+      if (player.position.x === fruit.position.x && player.position.y === fruit.position.y) {
         this.removeFruit(fruitId);
+      }
     }
   }
 

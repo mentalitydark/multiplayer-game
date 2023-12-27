@@ -1,46 +1,38 @@
-import { Fruit, Game, KeyBoard, Player } from "./classes/index.js";
+import { Game, KeyBoard, SocketIo } from "./classes/index.js";
 
-const game = new Game();
-game.keyboard = new KeyBoard();
-game.start();
+const form = document.querySelector("form");
+const inputName = document.querySelector("input#name");
 
-const socket = window.io();
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-socket.on("connect", () => {
-  game.currentPlayerId = socket.id;
-});
+  if (!inputName.value)
+    return;
+  
+  const game = new Game();
+  game.keyboard = new KeyBoard();
+  game.start();
+  
+  game.subscribeObserver((command) => {
+    if (command.type !== "add-player")
+      return;
+    
+    const tdName = document.createElement("td");
+    tdName.innerHTML = command.player.name;
 
-socket.on("disconnect", () => {
-  game.keyboard.unsubscribeObserver("socket-move-player");
-  game.keyboard.unsubscribeObserver("move-player");
-});
+    const tr = document.createElement("tr");
+    tr.id = command.player.id;
 
-socket.on("setup", (gameState) => {
-  game.state = gameState;
-  game.keyboard.subscribeObserver("socket-move-player", ({ keys }) => {
-    socket.emit("move-player", {type: "move-player", playerId: socket.id, keys});
+    tr.appendChild(tdName);
+
+    document.querySelector("tbody#players_board").appendChild(tr);
   });
-  game.keyboard.subscribeObserver("move-player", game.movePlayer.bind(game));
-});
 
-socket.on("add-player", (command) => {
-  game.addPlayer(new Player(command.player));
-});
+  const socketIo = new SocketIo();
 
-socket.on("remove-player", (command) => {
-  game.removePlayer(command.playerId);
-});
+  socketIo.registerEvents(game);
+  
+  socketIo.registerPlayer(inputName.value);
 
-socket.on("move-player", (command) => {
-  const playerId = socket.id;
-  if (playerId !== command.playerId)
-    game.movePlayer(command);
-});
-
-socket.on("add-fruit", (command) => {
-  game.addFruit(new Fruit(command.fruit));
-});
-
-socket.on("remove-fruit", (command) => {
-  game.removeFruit(command.fruitId);
+  document.querySelector("div#modal_form").remove();
 });

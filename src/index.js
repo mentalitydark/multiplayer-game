@@ -34,7 +34,6 @@ game.subscribeObserver((command) => {
 
 socketIo.on("connection", socket => {
   const playerId = socket.id;
-  game.addPlayer(new Player({ id: playerId, position: randomPosition(game.screen) }));
 
   socket.emit("setup", game.state);
 
@@ -47,6 +46,10 @@ socketIo.on("connection", socket => {
     command.type = "move-player";
 
     game.movePlayer(command);
+  });
+
+  socket.on("player-logged", (command) => {
+    game.addPlayer(new Player({ id: playerId, position: randomPosition(game.screen), name: command.playerName }));
   });
 });
 

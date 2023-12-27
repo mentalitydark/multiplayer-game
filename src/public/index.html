@@ -11,7 +11,26 @@
 <body>
   <div class="flex justify-center items-center w-full h-full flex-col p-4 font-semibold">
     <h1 class="text-3xl text-slate-900 mb-4">Multiplayer Game</h1>
-    <canvas id="game-screen" width="30" height="30" class="border-cyan-100 border-4 shadow-md"></canvas>
+    <div class="flex justify-center items-center flex-row w-1/2">
+      <canvas id="game-screen" width="30" height="30" class="border-cyan-100 border-4 shadow-md"></canvas>
+      <aside class="self-start w-1/2">
+        <p class="text-center text-slate-900">Players</p>
+        <table class="w-full text-slate-900">
+          <thead>
+            <th class="w-3/4">Name</th>
+          </thead>
+          <tbody id="players_board" class="text-center">
+          </tbody>
+        </table>
+      </aside>
+    </div>
+  </div>
+  <div class="absolute top-0 left-0 w-full h-full bg-slate-300/50 flex justify-center items-center" id="modal_form">
+    <form id="form" class="flex justify-center items-center flex-col border-2 border-slate-900 w-1/6 rounded-md bg-white">
+      <label for="name" class="text-slate-900 font-semibold m-4">Nickname</label>
+      <input type="text" name="name" id="name" class="border-cyan-100 border-2 rounded-md w-1/2 bg-slate-100">
+      <button type="submit" id="start" class="border-slate-900 border-2 rounded-md w-1/2 m-4 hover:bg-cyan-100">Start</button>
+    </form>
   </div>
   <script src="/javascripts/index.js" type="module"></script>
 </body>
